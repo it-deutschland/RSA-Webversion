@@ -1,0 +1,41 @@
+Options -Indexes
+Options -MultiViews
+
+RewriteEngine On
+
+# Redirect to installer if not configured
+RewriteCond %{REQUEST_URI} !^/install
+RewriteCond %{DOCUMENT_ROOT}/config.php !-f
+RewriteRule ^(.*)$ /install/index.php [R=302,L]
+
+# Block access to sensitive directories
+RewriteRule ^(src|database|backups|logs|storage|vendor)/ - [F,L]
+RewriteRule ^config\.php$ - [F,L]
+RewriteRule ^composer\.(json|lock)$ - [F,L]
+RewriteRule ^\.env$ - [F,L]
+
+# Allow direct access to assets
+RewriteCond %{REQUEST_URI} ^/assets/ [OR]
+RewriteCond %{REQUEST_URI} ^/uploads/
+RewriteRule ^ - [L]
+
+# Front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Disable PHP execution in uploads directory
+<IfModule mod_php.c>
+    <FilesMatch "\.php$">
+        Order allow,deny
+        Allow from all
+    </FilesMatch>
+</IfModule>
