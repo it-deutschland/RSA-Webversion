@@ -228,13 +228,21 @@ function checkPHP(): array
 
 function checkDirs(): array
 {
-    $dirs = [
-        'uploads/'  => is_writable(BASE_PATH . '/uploads'),
-        'logs/'     => is_writable(BASE_PATH . '/logs'),
-        'backups/'  => is_writable(BASE_PATH . '/backups'),
-        'storage/'  => is_writable(BASE_PATH . '/storage'),
-        './ (config)' => is_writable(BASE_PATH),
+    $paths = [
+        'uploads/'    => BASE_PATH . '/uploads',
+        'logs/'       => BASE_PATH . '/logs',
+        'backups/'    => BASE_PATH . '/backups',
+        'storage/'    => BASE_PATH . '/storage',
+        './ (config)' => BASE_PATH,
     ];
+
+    $dirs = [];
+    foreach ($paths as $label => $path) {
+        if (!is_dir($path)) {
+            @mkdir($path, 0755, true);
+        }
+        $dirs[$label] = is_writable($path);
+    }
     return $dirs;
 }
 
