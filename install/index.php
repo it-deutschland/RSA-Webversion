@@ -95,11 +95,7 @@ if ($step === 4 && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Execute schema
             $schema = file_get_contents(BASE_PATH . '/database/schema.sql');
-            // Split by semicolons but skip empty statements
-            $statements = array_filter(
-                array_map('trim', explode(';', $schema)),
-                static fn(string $s): bool => $s !== '' && !str_starts_with($s, '--')
-            );
+            $statements = parseSqlStatements($schema === false ? '' : $schema);
             foreach ($statements as $stmt) {
                 try {
                     $pdo->exec($stmt);
@@ -247,6 +243,16 @@ function stepClass(int $current, int $n): string
     if ($n < $current) return 'completed';
     if ($n === $current) return 'active';
     return '';
+}
+
+function parseSqlStatements(string $sql): array
+{
+    $sql = preg_replace('/^\s*--.*$/m', '', $sql) ?? $sql;
+
+    return array_values(array_filter(
+        array_map('trim', explode(';', $sql)),
+        static fn(string $statement): bool => $statement !== ''
+    ));
 }
 
 $db       = $_SESSION['install_db']    ?? [];
