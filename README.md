@@ -74,7 +74,7 @@ RSA21-Free ist eine vollständig browserbasierte Anwendung für die Erstellung u
 - **Datenbank:** MySQL 5.7+ / MariaDB 10.3+
 - **Webserver:** Apache mit `mod_rewrite` (oder nginx mit entsprechender Konfiguration)
 - **PHP-Erweiterungen:** `pdo`, `pdo_mysql`, `json`, `mbstring`, `openssl`, `gd`, `zip`, `fileinfo`
-- **Schreibrechte:** `uploads/`, `logs/`, `backups/`, `storage/`, und das Stammverzeichnis (für `config.php`)
+- **Schreibrechte:** `uploads/`, `infos/`, `backups/`, `storage/`, und das Stammverzeichnis (für `config.php`)
 
 ---
 
@@ -116,7 +116,7 @@ Im Stammverzeichnis muss eine Datei `config.php` vorhanden sein (wird vom Instal
 Falls kein Composer-Zugriff besteht: Laden Sie den `vendor/`-Ordner manuell per FTP hoch. Dieser Ordner muss `autoload.php` und alle Abhängigkeiten enthalten. Fehlt er, erscheint die Fehlermeldung *„Abhängigkeiten fehlen"* statt eines Redirect-Loops.
 
 **3. Schreibrechte prüfen**  
-Das Stammverzeichnis sowie `uploads/`, `logs/`, `backups/`, `storage/` müssen für den Webserver beschreibbar sein (Rechte 755 oder 775).
+Das Stammverzeichnis sowie `uploads/`, `infos/`, `backups/`, `storage/` müssen für den Webserver beschreibbar sein (Rechte 755 oder 775).
 
 **4. Browser-Cookies löschen**  
 Löschen Sie die Cookies für Ihre Domain und testen Sie im Inkognito-Fenster erneut.
@@ -159,7 +159,7 @@ RSA-Webversion/
 │   ├── schema.sql    # Datenbankschema
 │   └── seeds.sql     # Standardvorlagen
 ├── install/          # Installationsassistent
-├── logs/             # Anwendungslogs
+├── infos/             # Anwendungsinfos
 ├── routes/
 │   ├── web.php       # Web-Routen
 │   └── api.php       # API-Routen

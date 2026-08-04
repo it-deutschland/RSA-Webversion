@@ -41,7 +41,7 @@ class Logger
             return;
         }
 
-        $directory = defined('LOG_PATH') ? (string) LOG_PATH : BASE_PATH . '/logs';
+        $directory = defined('LOG_PATH') ? (string) LOG_PATH : BASE_PATH . '/infos';
         if (!is_dir($directory)) {
             mkdir($directory, 0775, true);
         }
