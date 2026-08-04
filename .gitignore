@@ -13,8 +13,8 @@
 !/backups/.gitkeep
 
 # Logs
-/logs/*
-!/logs/.gitkeep
+/infos/*
+!/infos/.gitkeep
 
 # Storage
 /storage/**/*

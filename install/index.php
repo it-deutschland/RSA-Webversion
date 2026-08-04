@@ -197,7 +197,7 @@ define('UPLOAD_PATH',        BASE_PATH . '/uploads');
 define('ALLOWED_EXTENSIONS', ['svg','png','jpg','jpeg','pdf','zip','dxf']);
 
 define('LOG_LEVEL',    'info');
-define('LOG_PATH',     BASE_PATH . '/logs');
+define('LOG_PATH',     BASE_PATH . '/infos');
 define('BACKUP_PATH',  BASE_PATH . '/backups');
 define('STORAGE_PATH', BASE_PATH . '/storage');
 
@@ -234,7 +234,7 @@ function checkDirs(): array
 {
     $paths = [
         'uploads/'    => BASE_PATH . '/uploads',
-        'logs/'       => BASE_PATH . '/logs',
+        'infos/'      => BASE_PATH . '/infos',
         'backups/'    => BASE_PATH . '/backups',
         'storage/'    => BASE_PATH . '/storage',
         './ (config)' => BASE_PATH,
