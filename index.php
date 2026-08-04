@@ -30,18 +30,22 @@ if (!file_exists(BASE_PATH . '/config.php')) {
     exit;
 }
 
-// Guard: vendor/autoload.php must exist (composer install must have been run).
-// Without it the application cannot start. Show a clear error instead of looping.
-if (!file_exists(BASE_PATH . '/vendor/autoload.php')) {
-    http_response_code(503);
-    echo '<h1>Abhängigkeiten fehlen</h1>';
-    echo '<p>Die Datei <code>vendor/autoload.php</code> wurde nicht gefunden.</p>';
-    echo '<p>Bitte führen Sie <code>composer install</code> im Verzeichnis <code>' . htmlspecialchars(BASE_PATH) . '</code> aus.</p>';
-    echo '<p>Falls Sie keinen Zugriff auf Composer haben, laden Sie den <code>vendor</code>-Ordner manuell auf den Server hoch.</p>';
-    exit;
-}
+// Built-in PSR-4 autoloader for the App\ namespace (replaces Composer/vendor).
+spl_autoload_register(static function (string $class): void {
+    $prefix = 'App\\';
+    $baseDir = SRC_PATH . '/';
 
-require_once BASE_PATH . '/vendor/autoload.php';
+    if (strncmp($prefix, $class, strlen($prefix)) !== 0) {
+        return;
+    }
+
+    $relativeClass = substr($class, strlen($prefix));
+    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+
+    if (file_exists($file)) {
+        require $file;
+    }
+});
 require_once BASE_PATH . '/config.php';
 
 use App\Core\App;
