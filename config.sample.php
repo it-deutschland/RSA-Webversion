@@ -52,7 +52,7 @@ define('ALLOWED_EXTENSIONS', ['svg','png','jpg','jpeg','pdf','zip','dxf']);
 
 // ── Logging ───────────────────────────────────────────────────────────────
 define('LOG_LEVEL',    'info');        // debug | info | warning | error
-define('LOG_PATH',     BASE_PATH . '/logs');
+define('LOG_PATH',     BASE_PATH . '/infos');
 
 // ── Backup ────────────────────────────────────────────────────────────────
 define('BACKUP_PATH',  BASE_PATH . '/backups');
