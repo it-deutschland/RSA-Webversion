@@ -74,7 +74,7 @@ RSA21-Free ist eine vollständig browserbasierte Anwendung für die Erstellung u
 - **Datenbank:** MySQL 5.7+ / MariaDB 10.3+
 - **Webserver:** Apache mit `mod_rewrite` (oder nginx mit entsprechender Konfiguration)
 - **PHP-Erweiterungen:** `pdo`, `pdo_mysql`, `json`, `mbstring`, `openssl`, `gd`, `zip`, `fileinfo`
-- **Schreibrechte:** `uploads/`, `logs/`, `backups/`, `storage/`, und das Stammverzeichnis (für `config.php`)
+- **Schreibrechte:** `uploads/`, `infos/`, `backups/`, `storage/`, und das Stammverzeichnis (für `config.php`)
 
 ---
 
@@ -95,6 +95,40 @@ Der Installer:
 
 ### 3. Nach der Installation
 Löschen oder sichern Sie den `install/`-Ordner zum Schutz vor unbefugtem Zugriff.
+
+Nach der Installation leitet die Anwendung automatisch von `/install/` auf die Startseite um. Eine vorhandene `config.php` im Stammverzeichnis signalisiert der App, dass die Installation abgeschlossen ist.
+
+---
+
+## Fehlerbehebung: Redirect-Loop nach der Installation (`ERR_TOO_MANY_REDIRECTS`)
+
+### Ursache
+Die App erkennt nach der Installation nicht, dass sie bereits eingerichtet ist. Dies passiert typischerweise wenn:
+- `config.php` nicht geschrieben wurde (Schreibrechte auf das Stammverzeichnis fehlen)
+- Der `vendor/`-Ordner fehlt (Composer wurde nicht ausgeführt / nicht hochgeladen)
+
+### Lösung
+
+**1. `config.php` prüfen**  
+Im Stammverzeichnis muss eine Datei `config.php` vorhanden sein (wird vom Installer automatisch angelegt). Wenn sie fehlt, starten Sie die Installation erneut unter `/install/`.
+
+**2. `vendor/`-Ordner prüfen**  
+Falls kein Composer-Zugriff besteht: Laden Sie den `vendor/`-Ordner manuell per FTP hoch. Dieser Ordner muss `autoload.php` und alle Abhängigkeiten enthalten. Fehlt er, erscheint die Fehlermeldung *„Abhängigkeiten fehlen"* statt eines Redirect-Loops.
+
+**3. Schreibrechte prüfen**  
+Das Stammverzeichnis sowie `uploads/`, `infos/`, `backups/`, `storage/` müssen für den Webserver beschreibbar sein (Rechte 755 oder 775).
+
+**4. Browser-Cookies löschen**  
+Löschen Sie die Cookies für Ihre Domain und testen Sie im Inkognito-Fenster erneut.
+
+**5. `APP_URL` prüfen**  
+Der Wert in `config.php` muss exakt der aufgerufenen URL entsprechen. Bei HTTP-Betrieb ohne SSL muss `APP_URL` mit `http://` beginnen, z. B.:
+```php
+define('APP_URL', 'http://s983687985.online.de');
+```
+Kein `https://`, kein abschließender Schrägstrich.
+
+**Hinweis:** Diese Anwendung erzwingt kein HTTPS. Falls Ihr Hoster automatisch auf HTTPS umleitet, muss `APP_URL` entsprechend auf `https://` gesetzt werden.
 
 ---
 
@@ -125,7 +159,7 @@ RSA-Webversion/
 │   ├── schema.sql    # Datenbankschema
 │   └── seeds.sql     # Standardvorlagen
 ├── install/          # Installationsassistent
-├── logs/             # Anwendungslogs
+├── infos/             # Anwendungsinfos
 ├── routes/
 │   ├── web.php       # Web-Routen
 │   └── api.php       # API-Routen

@@ -2,14 +2,22 @@ Options -Indexes
 Options -MultiViews
 
 RewriteEngine On
+RewriteBase /
 
-# Redirect to installer if not configured
-RewriteCond %{REQUEST_URI} !^/install
+# ── Install redirect ──────────────────────────────────────────────────────
+# If config.php does not exist and the request is NOT already inside /install,
+# redirect to the installer. This prevents a loop between index.php and /install.
+RewriteCond %{REQUEST_URI} !^/install [NC]
 RewriteCond %{DOCUMENT_ROOT}/config.php !-f
-RewriteRule ^(.*)$ /install/index.php [R=302,L]
+RewriteRule ^ /install/ [R=302,L]
+
+# If app IS installed and user tries to access /install, send them to app root.
+# This prevents accessing the installer after setup is complete.
+RewriteCond %{DOCUMENT_ROOT}/config.php -f
+RewriteRule ^install(/.*)?$ / [R=302,L]
 
 # Block access to sensitive directories
-RewriteRule ^(src|database|backups|logs|storage|vendor)/ - [F,L]
+RewriteRule ^(src|database|backups|infos|storage|vendor)/ - [F,L]
 RewriteRule ^config\.php$ - [F,L]
 RewriteRule ^composer\.(json|lock)$ - [F,L]
 RewriteRule ^\.env$ - [F,L]
