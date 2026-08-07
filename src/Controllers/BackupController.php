@@ -155,7 +155,7 @@ class BackupController extends Controller
     private function buildSqlDump(): string
     {
         $pdo = $this->db()->connect();
-        $lines = ['-- RSA21-Free backup', '-- Generated at ' . date('c'), 'SET FOREIGN_KEY_CHECKS = 0;', ''];
+        $lines = ['-- Sonka Bau & Sonnenimmobilien - Multi Administration backup', '-- Generated at ' . date('c'), 'SET FOREIGN_KEY_CHECKS = 0;', ''];
         $tables = $pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
 
         foreach ($tables as $table) {

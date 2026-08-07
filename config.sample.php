@@ -17,7 +17,7 @@ define('DB_PASS',     '');
 define('DB_CHARSET',  'utf8mb4');
 
 // ── Application ───────────────────────────────────────────────────────────
-define('APP_NAME',     'RSA21-Free');
+define('APP_NAME',     'Sonka Bau & Sonnenimmobilien - Multi Administration');
 define('APP_URL',      'http://localhost');
 define('APP_KEY',      'change-me-32-chars-secret-key!!');   // min 32 chars
 define('APP_DEBUG',    false);
@@ -35,7 +35,7 @@ define('SMTP_PORT',      587);
 define('SMTP_USER',      '');
 define('SMTP_PASS',      '');
 define('SMTP_FROM',      'noreply@example.com');
-define('SMTP_FROM_NAME', 'RSA21-Free');
+define('SMTP_FROM_NAME', 'Sonka Bau & Sonnenimmobilien - Multi Administration');
 define('SMTP_ENCRYPTION','tls');       // tls | ssl | ''
 
 // ── Security ──────────────────────────────────────────────────────────────

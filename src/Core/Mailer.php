@@ -49,7 +49,7 @@ class Mailer
             $mailer->CharSet = 'UTF-8';
             $mailer->setFrom(
                 defined('SMTP_FROM') ? (string) SMTP_FROM : (string) SMTP_USER,
-                defined('SMTP_FROM_NAME') ? (string) SMTP_FROM_NAME : 'RSA21-Free'
+                defined('SMTP_FROM_NAME') ? (string) SMTP_FROM_NAME : 'Sonka Bau & Sonnenimmobilien - Multi Administration'
             );
             $mailer->addAddress($to);
             $mailer->Subject = $subject;

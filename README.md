@@ -1,4 +1,4 @@
-# # RSA21-Free
+# # Sonka Bau & Sonnenimmobilien - Multi Administration
 
 **Open-Source-Webanwendung zur Erstellung, Verwaltung und Dokumentation von Verkehrszeichenplänen nach RSA21.**
 
@@ -8,9 +8,9 @@
 
 ---
 
-## Über RSA21-Free
+## Über Sonka Bau & Sonnenimmobilien - Multi Administration
 
-RSA21-Free ist eine vollständig browserbasierte Anwendung für die Erstellung und Verwaltung von Verkehrszeichenplänen gemäß den Richtlinien für die Sicherung von Arbeitsstellen an Straßen (RSA 21). Sie läuft ohne Docker, Node.js oder Build-Prozesse auf Standard-Shared-Hosting-Plattformen (IONOS, STRATO, ALL-INKL, netcup, u.a.).
+Sonka Bau & Sonnenimmobilien - Multi Administration ist eine vollständig browserbasierte Anwendung für die Erstellung und Verwaltung von Verkehrszeichenplänen gemäß den Richtlinien für die Sicherung von Arbeitsstellen an Straßen (RSA 21). Sie läuft ohne Docker, Node.js oder Build-Prozesse auf Standard-Shared-Hosting-Plattformen (IONOS, STRATO, ALL-INKL, netcup, u.a.).
 
 > **Rechtlicher Hinweis:** Diese Software dient als Werkzeug zur Erstellung und Verwaltung von Unterlagen. Die Anwendung ersetzt keine fachkundige Prüfung. Alle mit dieser Software erstellten Pläne und Dokumente sind vor der Einreichung bei der zuständigen Behörde durch einen qualifizierten Fachmann zu prüfen. Die Software sichert keine behördliche Genehmigungsfähigkeit zu.
 
@@ -205,4 +205,4 @@ Authorization: ******
 
 ## Lizenz
 
-MIT License – Copyright (c) 2024 RSA21-Free Contributors
+MIT License – Copyright (c) 2024 Sonka Bau & Sonnenimmobilien - Multi Administration Contributors

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * RSA21-Free – Installationsassistent
+ * Sonka Bau & Sonnenimmobilien - Multi Administration – Installationsassistent
  * Läuft ohne config.php – prüft Servervoraussetzungen,
  * legt die Datenbank an und schreibt die Konfiguration.
  *
@@ -157,7 +157,7 @@ if ($step === 4 && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $appKey = $db['appKey'];
             $configContent = <<<PHP
 <?php
-// RSA21-Free – Auto-generated configuration
+// Sonka Bau & Sonnenimmobilien - Multi Administration – Auto-generated configuration
 // Generated: {$_SERVER['REQUEST_TIME_FLOAT']}
 
 define('DB_HOST',     '{$db['dbHost']}');
@@ -167,7 +167,7 @@ define('DB_USER',     '{$db['dbUser']}');
 define('DB_PASS',     '{$db['dbPass']}');
 define('DB_CHARSET',  'utf8mb4');
 
-define('APP_NAME',     'RSA21-Free');
+define('APP_NAME',     'Sonka Bau & Sonnenimmobilien - Multi Administration');
 define('APP_URL',      '{$db['appUrl']}');
 define('APP_KEY',      '{$appKey}');
 define('APP_DEBUG',    false);
@@ -183,7 +183,7 @@ define('SMTP_PORT',      587);
 define('SMTP_USER',      '');
 define('SMTP_PASS',      '');
 define('SMTP_FROM',      '');
-define('SMTP_FROM_NAME', 'RSA21-Free');
+define('SMTP_FROM_NAME', 'Sonka Bau & Sonnenimmobilien - Multi Administration');
 define('SMTP_ENCRYPTION','tls');
 
 define('MAX_LOGIN_ATTEMPTS',  5);
@@ -279,7 +279,7 @@ $phpVersion = version_compare(PHP_VERSION, MIN_PHP, '>=');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RSA21-Free Installationsassistent</title>
+<title>Sonka Bau & Sonnenimmobilien - Multi Administration Installationsassistent</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
@@ -306,7 +306,7 @@ $phpVersion = version_compare(PHP_VERSION, MIN_PHP, '>=');
   <!-- Header -->
   <div class="text-center mb-4">
     <h1 class="h3 fw-bold text-white">
-      <i class="bi bi-sign-turn-right-fill text-primary me-2"></i>RSA21-Free
+      <i class="bi bi-sign-turn-right-fill text-primary me-2"></i>Sonka Bau & Sonnenimmobilien - Multi Administration
     </h1>
     <p class="text-white-50">Installationsassistent v<?= INSTALLER_VERSION ?></p>
   </div>
@@ -334,7 +334,7 @@ $phpVersion = version_compare(PHP_VERSION, MIN_PHP, '>=');
     <?php endif; ?>
 
     <?php /* ── STEP 1: Willkommen ────────────────────────────── */ if ($step === 1): ?>
-      <h4 class="mb-3"><i class="bi bi-house-heart me-2"></i>Willkommen bei RSA21-Free</h4>
+      <h4 class="mb-3"><i class="bi bi-house-heart me-2"></i>Willkommen bei Sonka Bau & Sonnenimmobilien - Multi Administration</h4>
       <p>Dieser Assistent führt Sie durch die Installation der Anwendung. Bitte stellen Sie sicher, dass:</p>
       <ul>
         <li>Sie die Dateien per FTP hochgeladen haben</li>
@@ -478,7 +478,7 @@ $phpVersion = version_compare(PHP_VERSION, MIN_PHP, '>=');
         <i class="bi bi-check-circle-fill text-success" style="font-size:4rem"></i>
         <h4 class="mt-3">Installation erfolgreich!</h4>
         <p class="text-white-50">
-          RSA21-Free wurde erfolgreich installiert.<br>
+          Sonka Bau & Sonnenimmobilien - Multi Administration wurde erfolgreich installiert.<br>
           Sie können sich nun mit Ihrem Administrator-Konto anmelden.
         </p>
         <div class="alert alert-warning text-start">
@@ -498,7 +498,7 @@ $phpVersion = version_compare(PHP_VERSION, MIN_PHP, '>=');
   </div><!-- /.installer-card -->
 
   <p class="text-center text-white-50 small mt-3">
-    RSA21-Free ist Open Source und wird unter der MIT-Lizenz veröffentlicht.
+    Sonka Bau & Sonnenimmobilien - Multi Administration ist Open Source und wird unter der MIT-Lizenz veröffentlicht.
   </p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

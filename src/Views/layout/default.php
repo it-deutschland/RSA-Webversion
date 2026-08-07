@@ -41,7 +41,7 @@ $navGroups = [
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= View::e($pageTitle) ?> · RSA21-Free</title>
+    <title><?= View::e($pageTitle) ?> · Sonka Bau & Sonnenimmobilien - Multi Administration</title>
     <script>
         (() => {
             const match = document.cookie.match(/(?:^|; )rsa21_theme=([^;]+)/);
@@ -59,7 +59,7 @@ $navGroups = [
         <aside class="col-12 col-lg-3 col-xxl-2 px-0">
             <div class="offcanvas-lg offcanvas-start border-end bg-body" tabindex="-1" id="appSidebar">
                 <div class="offcanvas-header border-bottom">
-                    <h1 class="offcanvas-title h4 mb-0">RSA21-Free</h1>
+                    <h1 class="offcanvas-title h4 mb-0">Sonka Bau & Sonnenimmobilien - Multi Administration</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#appSidebar" aria-label="Schließen"></button>
                 </div>
                 <div class="offcanvas-body d-flex flex-column p-3 gap-4">
@@ -86,7 +86,7 @@ $navGroups = [
                 <div class="container-fluid">
                     <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSidebar"><i class="bi bi-list"></i></button>
                     <div>
-                        <div class="fw-semibold">RSA21-Free</div>
+                        <div class="fw-semibold">Sonka Bau & Sonnenimmobilien - Multi Administration</div>
                         <div class="small text-body-secondary"><?= View::e($pageTitle) ?></div>
                     </div>
                     <div class="ms-auto d-flex align-items-center gap-2">

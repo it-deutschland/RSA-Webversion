@@ -1,5 +1,5 @@
 -- ============================================================
--- RSA21-Free – Datenbankschema
+-- Sonka Bau & Sonnenimmobilien - Multi Administration – Datenbankschema
 -- MariaDB / MySQL 10+  |  UTF-8mb4
 -- ============================================================
 
@@ -111,7 +111,7 @@ INSERT IGNORE INTO `settings` (`key`, `value`, `group`, `type`, `label`) VALUES
   ('company_website',   '',                            'company',  'text',     'Website'),
   ('company_logo',      '',                            'company',  'text',     'Logo (Pfad)'),
   ('company_logo_pdf',  '',                            'company',  'text',     'PDF-Logo (Pfad)'),
-  ('pdf_footer_text',   'Erstellt mit RSA21-Free',     'pdf',      'text',     'PDF-Fußzeile'),
+  ('pdf_footer_text',   'Erstellt mit Sonka Bau & Sonnenimmobilien - Multi Administration',     'pdf',      'text',     'PDF-Fußzeile'),
   ('pdf_page_size',     'A4',                          'pdf',      'text',     'Seitengröße'),
   ('pdf_orientation',   'P',                           'pdf',      'text',     'Ausrichtung (P/L)'),
   ('registration_enabled','1',                         'security', 'boolean',  'Registrierung erlaubt'),
@@ -123,7 +123,7 @@ INSERT IGNORE INTO `settings` (`key`, `value`, `group`, `type`, `label`) VALUES
   ('smtp_from',         '',                            'mail',     'text',     'Absender-E-Mail'),
   ('smtp_from_name',    '',                            'mail',     'text',     'Absendername'),
   ('smtp_encryption',   'tls',                         'mail',     'text',     'Verschlüsselung'),
-  ('legal_disclaimer',  'Diese Unterlagen wurden mit RSA21-Free erstellt. Sie ersetzen keine fachkundige Prüfung. Vor der Einreichung ist eine Überprüfung durch einen qualifizierten Fachmann erforderlich.', 'legal', 'textarea', 'Rechtlicher Hinweis');
+  ('legal_disclaimer',  'Diese Unterlagen wurden mit Sonka Bau & Sonnenimmobilien - Multi Administration erstellt. Sie ersetzen keine fachkundige Prüfung. Vor der Einreichung ist eine Überprüfung durch einen qualifizierten Fachmann erforderlich.', 'legal', 'textarea', 'Rechtlicher Hinweis');
 
 -- ── Customers ────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS `customers` (

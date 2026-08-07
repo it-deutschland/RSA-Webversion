@@ -1,4 +1,4 @@
--- RSA21-Free – Dokumentvorlagen (Default-Templates)
+-- Sonka Bau & Sonnenimmobilien - Multi Administration – Dokumentvorlagen (Default-Templates)
 -- Diese Vorlagen werden bei der Installation eingefügt.
 
 INSERT IGNORE INTO `templates` (`type`, `name`, `description`, `content`, `is_default`) VALUES
@@ -24,7 +24,7 @@ INSERT IGNORE INTO `templates` (`type`, `name`, `description`, `content`, `is_de
     {"name":"road_closure","label":"Sperrungen","type":"textarea","value":""}
   ]},
   {"id":"legal","label":"Erklärung","fields":[
-    {"name":"disclaimer","label":"Rechtlicher Hinweis","type":"static","value":"Die eingereichten Unterlagen wurden mit RSA21-Free erstellt. Sie ersetzen keine fachkundige Prüfung durch einen qualifizierten Fachmann. Alle Angaben sind nach bestem Wissen und Gewissen gemacht. Die Genehmigungsfähigkeit kann durch diese Software nicht zugesichert werden."},
+    {"name":"disclaimer","label":"Rechtlicher Hinweis","type":"static","value":"Die eingereichten Unterlagen wurden mit Sonka Bau & Sonnenimmobilien - Multi Administration erstellt. Sie ersetzen keine fachkundige Prüfung durch einen qualifizierten Fachmann. Alle Angaben sind nach bestem Wissen und Gewissen gemacht. Die Genehmigungsfähigkeit kann durch diese Software nicht zugesichert werden."},
     {"name":"date_place","label":"Ort, Datum","type":"text","value":"{{city}}, {{date}}"},
     {"name":"signature","label":"Unterschrift Antragsteller","type":"signature","value":""}
   ]}
@@ -148,6 +148,6 @@ INSERT IGNORE INTO `templates` (`type`, `name`, `description`, `content`, `is_de
     {"name":"problems","label":"Aufgetretene Probleme / Lösungen","type":"textarea","value":""}
   ]},
   {"id":"disclaimer","label":"Rechtlicher Hinweis","fields":[
-    {"name":"disclaimer","label":"Hinweis","type":"static","value":"Diese Dokumentation wurde mit RSA21-Free erstellt. Die Genehmigungsfähigkeit der erstellten Unterlagen kann durch diese Software nicht zugesichert werden. Alle Planunterlagen und Dokumente sind vor der Einreichung bei der zuständigen Behörde durch einen qualifizierten Fachmann zu prüfen."}
+    {"name":"disclaimer","label":"Hinweis","type":"static","value":"Diese Dokumentation wurde mit Sonka Bau & Sonnenimmobilien - Multi Administration erstellt. Die Genehmigungsfähigkeit der erstellten Unterlagen kann durch diese Software nicht zugesichert werden. Alle Planunterlagen und Dokumente sind vor der Einreichung bei der zuständigen Behörde durch einen qualifizierten Fachmann zu prüfen."}
   ]}
 ]}', 1);

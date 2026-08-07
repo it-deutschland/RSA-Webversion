@@ -5,7 +5,7 @@ use App\Core\View;
 ?>
 <div class="text-center mb-4">
     <h1 class="h3 mb-2">Konto erstellen</h1>
-    <p class="text-body-secondary mb-0">Erstellen Sie ein neues Benutzerkonto für RSA21-Free.</p>
+    <p class="text-body-secondary mb-0">Erstellen Sie ein neues Benutzerkonto für Sonka Bau & Sonnenimmobilien - Multi Administration.</p>
 </div>
 <form method="post" action="/register" class="row g-3">
     <?= CSRF::field() ?>

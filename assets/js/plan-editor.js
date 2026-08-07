@@ -1,5 +1,5 @@
 /**
- * RSA21-Free – Plan Editor
+ * Sonka Bau & Sonnenimmobilien - Multi Administration – Plan Editor
  * Built on Fabric.js 5.x  |  No build process required
  * @license MIT
  */
