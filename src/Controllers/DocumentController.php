@@ -11,6 +11,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
 use App\Core\Validator;
+use App\Models\Document;
 use Throwable;
 
 /**
@@ -72,19 +73,29 @@ class DocumentController extends Controller
         }
 
         $templateId = $this->nullableInt(Request::post('template_id'));
-        $content = trim((string) Request::post('content', ''));
+        $type = trim((string) Request::post('type', 'other')) ?: 'other';
+        $postedFields = Request::post('fields', []);
+        $content = '';
+
+        if (is_array($postedFields) && is_array($postedFields[$type] ?? null)) {
+            $content = $this->buildStructuredDocumentContent($type, $postedFields[$type]);
+        }
+
         if ($templateId !== null) {
             $template = $this->findRecord('templates', $templateId);
             if ($template !== null && $content === '') {
                 $content = (string) ($template['content'] ?? '');
             }
         }
+        if ($content === '') {
+            $content = $this->buildStructuredDocumentContent($type, []);
+        }
 
         $payload = [
             'project_id' => (int) $project['id'],
             'created_by' => Auth::id(),
             'template_id' => $templateId,
-            'type' => trim((string) Request::post('type', 'other')) ?: 'other',
+            'type' => $type,
             'title' => trim((string) Request::post('title')),
             'content' => $content,
             'version' => 1,
@@ -109,7 +120,11 @@ class DocumentController extends Controller
             Response::notFound();
         }
 
-        $this->render('documents/show', ['document' => $document]);
+        $this->render('documents/show', [
+            'document' => $document,
+            'project' => ['title' => (string) ($document['project_title'] ?? '')],
+            'contentHtml' => $this->renderDocumentContentHtml($document),
+        ]);
     }
 
     public function edit(string $id): void
@@ -121,7 +136,14 @@ class DocumentController extends Controller
             Response::notFound();
         }
 
-        $this->render('documents/edit', ['document' => $document]);
+        $this->render('documents/edit', [
+            'document' => $document,
+            'project' => ['title' => (string) ($document['project_title'] ?? '')],
+            'typeOptions' => Document::getTypeOptions(),
+            'formDefinitions' => $this->getDocumentFormDefinitions(),
+            'fieldValues' => $this->extractStructuredDocumentFields((string) ($document['content'] ?? ''), (string) ($document['type'] ?? 'other')),
+            'legacyContent' => $this->isStructuredDocumentContent((string) ($document['content'] ?? '')) ? '' : (string) ($document['content'] ?? ''),
+        ]);
     }
 
     public function update(string $id): void
@@ -140,10 +162,22 @@ class DocumentController extends Controller
             $this->back();
         }
 
+        $type = trim((string) Request::post('type', 'other')) ?: 'other';
+        $allFields = Request::post('fields', []);
+        $typeFields = [];
+        if (is_array($allFields) && is_array($allFields[$type] ?? null)) {
+            $typeFields = $allFields[$type];
+        }
+
+        $content = $this->buildStructuredDocumentContent($type, $typeFields);
+        if ($content === '' && trim((string) Request::post('content', '')) !== '') {
+            $content = (string) Request::post('content', '');
+        }
+
         $update = [
             'title' => trim((string) Request::post('title')),
-            'type' => trim((string) Request::post('type', 'other')) ?: 'other',
-            'content' => Request::post('content', ''),
+            'type' => $type,
+            'content' => $content,
             'status' => trim((string) Request::post('status', 'draft')) ?: 'draft',
             'version' => ((int) ($document['version'] ?? 1)) + 1,
             'updated_at' => date('Y-m-d H:i:s'),
@@ -230,20 +264,212 @@ class DocumentController extends Controller
      */
     private function buildPrintHtml(array $document): string
     {
-        $content = (string) ($document['content'] ?? '');
-        if ($content !== '' && str_starts_with(ltrim($content), '{')) {
-            $decoded = json_decode($content, true);
-            if (is_array($decoded)) {
-                $content = '<pre>' . htmlspecialchars(json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '', ENT_QUOTES, 'UTF-8') . '</pre>';
-            }
-        }
+        $content = $this->renderDocumentContentHtml($document);
 
         return '<!doctype html><html><head><meta charset="utf-8"><title>'
             . htmlspecialchars((string) ($document['title'] ?? 'Document'), ENT_QUOTES, 'UTF-8')
-            . '</title><style>body{font-family:Arial,sans-serif;max-width:960px;margin:40px auto;color:#222}header{border-bottom:1px solid #ccc;margin-bottom:24px;padding-bottom:12px}pre{white-space:pre-wrap;background:#f7f7f7;padding:16px;border-radius:8px}</style></head><body>'
+            . '</title><style>body{font-family:Arial,sans-serif;max-width:960px;margin:40px auto;color:#222}header{border-bottom:1px solid #ccc;margin-bottom:24px;padding-bottom:12px}pre{white-space:pre-wrap;background:#f7f7f7;padding:16px;border-radius:8px}.rsa-form-table{width:100%;border-collapse:collapse}.rsa-form-table th,.rsa-form-table td{border:1px solid #d9d9d9;padding:10px;vertical-align:top}.rsa-form-table th{width:34%;background:#f5f7fa;text-align:left}.rsa-form-empty{color:#777}</style></head><body>'
             . '<header><h1>' . htmlspecialchars((string) ($document['title'] ?? 'Document'), ENT_QUOTES, 'UTF-8') . '</h1>'
             . '<p>Project: ' . htmlspecialchars((string) ($document['project_title'] ?? ''), ENT_QUOTES, 'UTF-8') . '</p></header>'
             . '<main>' . $content . '</main></body></html>';
+    }
+
+    /**
+     * @return array<string, array<int, array<string, mixed>>>
+     */
+    private function getDocumentFormDefinitions(): array
+    {
+        return [
+            'vra' => [
+                ['key' => 'authority', 'label' => 'Anordnende Behörde', 'type' => 'text'],
+                ['key' => 'contact_person', 'label' => 'Sachbearbeitung', 'type' => 'text'],
+                ['key' => 'street', 'label' => 'Straße / Abschnitt', 'type' => 'text'],
+                ['key' => 'location', 'label' => 'Ort / Lage', 'type' => 'text'],
+                ['key' => 'period', 'label' => 'Zeitraum', 'type' => 'text'],
+                ['key' => 'legal_basis', 'label' => 'Rechtsgrundlage', 'type' => 'text'],
+                ['key' => 'measures', 'label' => 'Anordnung / Maßnahmen', 'type' => 'textarea'],
+            ],
+            'signlist' => [
+                ['key' => 'street', 'label' => 'Straße / Abschnitt', 'type' => 'text'],
+                ['key' => 'direction', 'label' => 'Fahrtrichtung / Bereich', 'type' => 'text'],
+                ['key' => 'sign_codes', 'label' => 'Verkehrszeichen (Nummern)', 'type' => 'textarea'],
+                ['key' => 'additional_signs', 'label' => 'Zusatzzeichen', 'type' => 'textarea'],
+                ['key' => 'remarks', 'label' => 'Bemerkungen', 'type' => 'textarea'],
+            ],
+            'materiallist' => [
+                ['key' => 'project_reference', 'label' => 'Projektbezug', 'type' => 'text'],
+                ['key' => 'delivery_date', 'label' => 'Lieferdatum', 'type' => 'date'],
+                ['key' => 'items', 'label' => 'Materialpositionen', 'type' => 'textarea'],
+                ['key' => 'storage_location', 'label' => 'Lagerort', 'type' => 'text'],
+                ['key' => 'remarks', 'label' => 'Bemerkungen', 'type' => 'textarea'],
+            ],
+            'dailyreport' => [
+                ['key' => 'report_date', 'label' => 'Berichtsdatum', 'type' => 'date'],
+                ['key' => 'weather', 'label' => 'Wetter', 'type' => 'text'],
+                ['key' => 'crew', 'label' => 'Personal / Kolonne', 'type' => 'textarea'],
+                ['key' => 'work_performed', 'label' => 'Ausgeführte Arbeiten', 'type' => 'textarea'],
+                ['key' => 'incidents', 'label' => 'Besonderheiten / Vorkommnisse', 'type' => 'textarea'],
+            ],
+            'sitecheck' => [
+                ['key' => 'inspection_date', 'label' => 'Kontrolldatum', 'type' => 'date'],
+                ['key' => 'inspector', 'label' => 'Kontrollierende Person', 'type' => 'text'],
+                ['key' => 'location', 'label' => 'Kontrollort', 'type' => 'text'],
+                ['key' => 'defects', 'label' => 'Festgestellte Mängel', 'type' => 'textarea'],
+                ['key' => 'actions', 'label' => 'Sofortmaßnahmen', 'type' => 'textarea'],
+                ['key' => 'safe_to_operate', 'label' => 'Verkehrssicherheit gegeben', 'type' => 'checkbox'],
+            ],
+            'acceptance' => [
+                ['key' => 'acceptance_date', 'label' => 'Abnahmedatum', 'type' => 'date'],
+                ['key' => 'client', 'label' => 'Auftraggeber', 'type' => 'text'],
+                ['key' => 'contractor', 'label' => 'Auftragnehmer', 'type' => 'text'],
+                ['key' => 'result', 'label' => 'Abnahmeergebnis', 'type' => 'select', 'options' => ['accepted' => 'Abgenommen', 'accepted_with_defects' => 'Mit Mängeln', 'rejected' => 'Nicht abgenommen']],
+                ['key' => 'defect_log', 'label' => 'Mängelliste / Auflagen', 'type' => 'textarea'],
+            ],
+            'report' => [
+                ['key' => 'summary', 'label' => 'Zusammenfassung', 'type' => 'textarea'],
+                ['key' => 'scope', 'label' => 'Leistungsumfang', 'type' => 'textarea'],
+                ['key' => 'timeline', 'label' => 'Zeitlicher Ablauf', 'type' => 'textarea'],
+                ['key' => 'costs', 'label' => 'Kosten / Abrechnung', 'type' => 'textarea'],
+                ['key' => 'recommendations', 'label' => 'Empfehlungen', 'type' => 'textarea'],
+            ],
+            'other' => [
+                ['key' => 'subject', 'label' => 'Betreff', 'type' => 'text'],
+                ['key' => 'details', 'label' => 'Inhalt', 'type' => 'textarea'],
+            ],
+        ];
+    }
+
+    private function buildStructuredDocumentContent(string $type, array $rawFields): string
+    {
+        $definitions = $this->getDocumentFormDefinitions();
+        $normalizedType = isset($definitions[$type]) ? $type : 'other';
+        $fields = [];
+
+        foreach ($definitions[$normalizedType] as $definition) {
+            $key = (string) ($definition['key'] ?? '');
+            if ($key === '') {
+                continue;
+            }
+
+            $value = $rawFields[$key] ?? '';
+            $fieldType = (string) ($definition['type'] ?? 'text');
+
+            if ($fieldType === 'checkbox') {
+                $fields[$key] = in_array((string) $value, ['1', 'true', 'on', 'yes'], true) ? '1' : '0';
+                continue;
+            }
+
+            $fields[$key] = trim((string) $value);
+        }
+
+        return json_encode(
+            [
+                'format' => 'rsa21_form_v1',
+                'type' => $normalizedType,
+                'fields' => $fields,
+            ],
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        ) ?: '';
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function decodeStructuredDocumentContent(string $content): ?array
+    {
+        if (trim($content) === '' || !str_starts_with(ltrim($content), '{')) {
+            return null;
+        }
+
+        $decoded = json_decode($content, true);
+        if (!is_array($decoded)) {
+            return null;
+        }
+
+        if (($decoded['format'] ?? null) !== 'rsa21_form_v1') {
+            return null;
+        }
+        if (!is_string($decoded['type'] ?? null) || !is_array($decoded['fields'] ?? null)) {
+            return null;
+        }
+
+        return $decoded;
+    }
+
+    private function isStructuredDocumentContent(string $content): bool
+    {
+        return $this->decodeStructuredDocumentContent($content) !== null;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function extractStructuredDocumentFields(string $content, string $type): array
+    {
+        $decoded = $this->decodeStructuredDocumentContent($content);
+        if ($decoded === null || (string) ($decoded['type'] ?? '') !== $type) {
+            return [];
+        }
+
+        $values = [];
+        foreach ((array) ($decoded['fields'] ?? []) as $key => $value) {
+            $values[(string) $key] = trim((string) $value);
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param array<string, mixed> $document
+     */
+    private function renderDocumentContentHtml(array $document): string
+    {
+        $content = (string) ($document['content'] ?? '');
+        $decoded = $this->decodeStructuredDocumentContent($content);
+        $typeLabels = Document::getTypeOptions();
+
+        if ($decoded !== null) {
+            $type = (string) ($decoded['type'] ?? 'other');
+            $definitions = $this->getDocumentFormDefinitions()[$type] ?? $this->getDocumentFormDefinitions()['other'];
+            $fields = (array) ($decoded['fields'] ?? []);
+
+            $html = '<section><p><strong>Dokumenttyp:</strong> ' . htmlspecialchars($typeLabels[$type] ?? 'Sonstiges', ENT_QUOTES, 'UTF-8') . '</p><table class="table table-bordered rsa-form-table">';
+            foreach ($definitions as $definition) {
+                $key = (string) ($definition['key'] ?? '');
+                $label = (string) ($definition['label'] ?? $key);
+                $fieldType = (string) ($definition['type'] ?? 'text');
+                $raw = trim((string) ($fields[$key] ?? ''));
+
+                if ($fieldType === 'checkbox') {
+                    $valueHtml = in_array($raw, ['1', 'true', 'on', 'yes'], true) ? 'Ja' : 'Nein';
+                } elseif ($fieldType === 'select') {
+                    $options = is_array($definition['options'] ?? null) ? $definition['options'] : [];
+                    $valueHtml = htmlspecialchars((string) ($options[$raw] ?? $raw), ENT_QUOTES, 'UTF-8');
+                } elseif ($raw === '') {
+                    $valueHtml = '<span class="rsa-form-empty">—</span>';
+                } else {
+                    $valueHtml = nl2br(htmlspecialchars($raw, ENT_QUOTES, 'UTF-8'));
+                }
+
+                $html .= '<tr><th>' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</th><td>' . $valueHtml . '</td></tr>';
+            }
+            $html .= '</table></section>';
+
+            return $html;
+        }
+
+        if ($content !== '' && str_starts_with(ltrim($content), '{')) {
+            $decodedJson = json_decode($content, true);
+            if (is_array($decodedJson)) {
+                return '<pre>' . htmlspecialchars(json_encode($decodedJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '', ENT_QUOTES, 'UTF-8') . '</pre>';
+            }
+        }
+
+        if (trim($content) === '') {
+            return '<p class="rsa-form-empty">Für dieses Dokument ist noch kein Inhalt vorhanden.</p>';
+        }
+
+        return $content;
     }
 
     private function nullableInt(mixed $value): ?int
