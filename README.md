@@ -83,37 +83,31 @@ RSA21-Free ist eine vollständig browserbasierte Anwendung für die Erstellung u
 ### 1. Dateien hochladen
 Laden Sie alle Dateien per FTP auf Ihren Webserver hoch.
 
-### 2. Installer aufrufen
-Rufen Sie die Domain im Browser auf. Der Installationsassistent unter `/install/` startet automatisch wenn keine `config.php` gefunden wird.
+### 2. Datenbank importieren
+Importieren Sie `database.sql` in Ihre MySQL/MariaDB-Datenbank.
 
-Der Installer:
-1. Prüft PHP-Version und benötigte Erweiterungen
-2. Richtet die Datenbankverbindung ein
-3. Erstellt alle Tabellen (Schema + Standardvorlagen)
-4. Legt den Administrator-Account an
-5. Schreibt `config.php`
+### 3. `config.php` anlegen
+Kopieren Sie `config.sample.php` nach `config.php` und tragen Sie Ihre DB-Zugangsdaten ein.
 
-### 3. Nach der Installation
-Löschen oder sichern Sie den `install/`-Ordner zum Schutz vor unbefugtem Zugriff.
-
-Nach der Installation leitet die Anwendung automatisch von `/install/` auf die Startseite um. Eine vorhandene `config.php` im Stammverzeichnis signalisiert der App, dass die Installation abgeschlossen ist.
+### 4. Starten
+Rufen Sie die Domain im Browser auf. Weitere Installations- oder Build-Schritte sind nicht erforderlich.
 
 ---
 
-## Fehlerbehebung: Redirect-Loop nach der Installation (`ERR_TOO_MANY_REDIRECTS`)
+## Fehlerbehebung
 
 ### Ursache
-Die App erkennt nach der Installation nicht, dass sie bereits eingerichtet ist. Dies passiert typischerweise wenn:
-- `config.php` nicht geschrieben wurde (Schreibrechte auf das Stammverzeichnis fehlen)
-- Der `vendor/`-Ordner fehlt (Composer wurde nicht ausgeführt / nicht hochgeladen)
+Die App erkennt die Konfiguration nicht. Dies passiert typischerweise wenn:
+- `config.php` fehlt oder ungültig ist
+- die Datenbankverbindung in `config.php` nicht stimmt
 
 ### Lösung
 
 **1. `config.php` prüfen**  
-Im Stammverzeichnis muss eine Datei `config.php` vorhanden sein (wird vom Installer automatisch angelegt). Wenn sie fehlt, starten Sie die Installation erneut unter `/install/`.
+Im Stammverzeichnis muss eine Datei `config.php` vorhanden sein. Erstellen Sie sie aus `config.sample.php`.
 
-**2. `vendor/`-Ordner prüfen**  
-Falls kein Composer-Zugriff besteht: Laden Sie den `vendor/`-Ordner manuell per FTP hoch. Dieser Ordner muss `autoload.php` und alle Abhängigkeiten enthalten. Fehlt er, erscheint die Fehlermeldung *„Abhängigkeiten fehlen"* statt eines Redirect-Loops.
+**2. Datenbank prüfen**  
+Stellen Sie sicher, dass `database.sql` importiert wurde und die Zugangsdaten in `config.php` korrekt sind.
 
 **3. Schreibrechte prüfen**  
 Das Stammverzeichnis sowie `uploads/`, `infos/`, `backups/`, `storage/` müssen für den Webserver beschreibbar sein (Rechte 755 oder 775).
@@ -143,9 +137,6 @@ Für SMTP-E-Mail (Passwort zurücksetzen, Benachrichtigungen) tragen Sie die SMT
 ## Entwicklung
 
 ```bash
-# Nur Autoloader neu generieren (keine externe Pakete nötig)
-composer dump-autoload --optimize
-
 # Lokaler PHP-Entwicklungsserver
 php -S localhost:8080
 ```
@@ -155,25 +146,32 @@ php -S localhost:8080
 RSA-Webversion/
 ├── assets/           # CSS, JS, Bilder
 ├── backups/          # Backup-Dateien
-├── database/
-│   ├── schema.sql    # Datenbankschema
-│   └── seeds.sql     # Standardvorlagen
-├── install/          # Installationsassistent
+├── api/
+│   ├── plans.php     # Plan-API (Save/Export)
+│   └── symbols.php   # Symbol-API
+├── includes/         # DB, Auth, CSRF, Helper, Upload
 ├── infos/             # Anwendungsinfos
-├── routes/
-│   ├── web.php       # Web-Routen
-│   └── api.php       # API-Routen
+├── layout/           # Header/Footer
+├── pages/            # Seitenmodule
+│   ├── projects/
+│   ├── plans/
+│   ├── customers/
+│   ├── materials/
+│   ├── symbols/
+│   ├── users/
+│   ├── settings/
+│   ├── backup/
+│   └── notifications/
 ├── src/
-│   ├── Controllers/  # MVC-Controller
-│   ├── Core/         # Framework-Kern (Router, Auth, DB, ...)
+│   ├── Controllers/  # Fachlogik
 │   ├── Models/       # Datenbankmodelle
 │   ├── Services/     # Dienste (PDF, Backup, Upload)
 │   └── Views/        # PHP-Templates
 ├── storage/          # Symbole, Vorlagen
 ├── uploads/          # Datei-Uploads
-├── vendor/           # Composer (nur PSR-4-Autoloader)
 ├── .htaccess
-├── composer.json
+├── config.php
+├── database.sql
 ├── config.sample.php
 └── index.php
 ```
@@ -209,4 +207,3 @@ Authorization: ******
 ## Lizenz
 
 MIT License – Copyright (c) 2024 RSA21-Free Contributors
-
