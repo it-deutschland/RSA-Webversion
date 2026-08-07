@@ -1,5 +1,5 @@
 /**
- * RSA21-Free – Main Application JavaScript
+ * Sonka Bau & Sonnenimmobilien - Multi Administration – Main Application JavaScript
  * ES6, no build process required.
  * @license MIT
  */

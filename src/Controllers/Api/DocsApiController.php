@@ -14,9 +14,9 @@ class DocsApiController extends Controller
 {
     public function index(): void
     {
-        $html = '<!doctype html><html><head><meta charset="utf-8"><title>RSA21-Free API</title>'
+        $html = '<!doctype html><html><head><meta charset="utf-8"><title>Sonka Bau & Sonnenimmobilien - Multi Administration API</title>'
             . '<style>body{font-family:Arial,sans-serif;max-width:980px;margin:40px auto;color:#222}code{background:#f5f5f5;padding:2px 6px;border-radius:4px}</style>'
-            . '</head><body><h1>RSA21-Free API</h1><p>Base URL: <code>/api/v1</code></p>'
+            . '</head><body><h1>Sonka Bau & Sonnenimmobilien - Multi Administration API</h1><p>Base URL: <code>/api/v1</code></p>'
             . '<ul><li>POST <code>/auth/login</code></li><li>POST <code>/auth/refresh</code></li><li>GET <code>/projects</code></li><li>GET <code>/projects/{id}</code></li><li>GET <code>/plans</code></li><li>GET <code>/plans/{id}</code></li><li>GET <code>/symbols</code></li><li>GET <code>/symbols/{id}</code></li></ul>'
             . '<p>OpenAPI spec: <a href="/api/v1/openapi.json">/api/v1/openapi.json</a></p></body></html>';
         Response::setHeader('Content-Type', 'text/html; charset=UTF-8');
@@ -29,7 +29,7 @@ class DocsApiController extends Controller
         $spec = [
             'openapi' => '3.0.3',
             'info' => [
-                'title' => 'RSA21-Free API',
+                'title' => 'Sonka Bau & Sonnenimmobilien - Multi Administration API',
                 'version' => defined('APP_VERSION') ? (string) APP_VERSION : '1.0.0',
             ],
             'servers' => [

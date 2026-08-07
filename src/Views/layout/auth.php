@@ -18,7 +18,7 @@ foreach ($flashTypes as $key => $class) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= View::e($pageTitle) ?> · RSA21-Free</title>
+    <title><?= View::e($pageTitle) ?> · Sonka Bau & Sonnenimmobilien - Multi Administration</title>
     <script>
         (() => {
             const match = document.cookie.match(/(?:^|; )rsa21_theme=([^;]+)/);
@@ -28,12 +28,12 @@ foreach ($flashTypes as $key => $class) {
     </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="/assets/css/app.php" rel="stylesheet">
+    <link href="/assets/css/app.css" rel="stylesheet">
 </head>
 <body class="auth-gradient min-vh-100 d-flex flex-column">
 <nav class="navbar bg-transparent py-3">
     <div class="container">
-        <a class="navbar-brand fw-semibold d-flex align-items-center gap-2" href="/"><i class="bi bi-cone-striped"></i><span>RSA21-Free</span></a>
+        <a class="navbar-brand fw-semibold d-flex align-items-center gap-2" href="/"><i class="bi bi-cone-striped"></i><span>Sonka Bau & Sonnenimmobilien - Multi Administration</span></a>
         <button class="btn btn-outline-secondary" type="button" id="themeToggle" aria-label="Farbschema umschalten"><i class="bi bi-moon-stars"></i></button>
     </div>
 </nav>

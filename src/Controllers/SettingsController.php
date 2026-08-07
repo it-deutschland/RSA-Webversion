@@ -80,7 +80,7 @@ class SettingsController extends Controller
             $this->json(['message' => 'No test recipient available.'], 422);
         }
 
-        $success = Mailer::send($email, 'RSA21-Free SMTP test', '<p>This is a test email from RSA21-Free.</p>', true);
+        $success = Mailer::send($email, 'Sonka Bau & Sonnenimmobilien - Multi Administration SMTP test', '<p>This is a test email from Sonka Bau & Sonnenimmobilien - Multi Administration.</p>', true);
         if ($success) {
             $this->recordLog('smtp_test_sent', 'settings', null, null, [], ['recipient' => $email]);
             $this->json(['message' => 'Test email sent successfully.']);

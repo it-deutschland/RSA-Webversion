@@ -168,7 +168,7 @@ class BackupService
         );
         $pdo = new PDO($dsn, DB_USER, DB_PASS, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-        $out  = "-- RSA21-Free Database Backup\n";
+        $out  = "-- Sonka Bau & Sonnenimmobilien - Multi Administration Database Backup\n";
         $out .= "-- Date: " . date('Y-m-d H:i:s') . "\n";
         $out .= "-- Database: " . DB_NAME . "\n\n";
         $out .= "SET FOREIGN_KEY_CHECKS=0;\n\n";

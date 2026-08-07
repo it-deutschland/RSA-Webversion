@@ -1,5 +1,5 @@
 -- ============================================================
--- RSA21-Free – Datenbankschema
+-- Sonka Bau & Sonnenimmobilien - Multi Administration – Datenbankschema
 -- MariaDB / MySQL 10+  |  UTF-8mb4
 -- ============================================================
 
@@ -111,7 +111,7 @@ INSERT IGNORE INTO `settings` (`key`, `value`, `group`, `type`, `label`) VALUES
   ('company_website',   '',                            'company',  'text',     'Website'),
   ('company_logo',      '',                            'company',  'text',     'Logo (Pfad)'),
   ('company_logo_pdf',  '',                            'company',  'text',     'PDF-Logo (Pfad)'),
-  ('pdf_footer_text',   'Erstellt mit RSA21-Free',     'pdf',      'text',     'PDF-Fußzeile'),
+  ('pdf_footer_text',   'Erstellt mit Sonka Bau & Sonnenimmobilien - Multi Administration',     'pdf',      'text',     'PDF-Fußzeile'),
   ('pdf_page_size',     'A4',                          'pdf',      'text',     'Seitengröße'),
   ('pdf_orientation',   'P',                           'pdf',      'text',     'Ausrichtung (P/L)'),
   ('registration_enabled','1',                         'security', 'boolean',  'Registrierung erlaubt'),
@@ -123,7 +123,7 @@ INSERT IGNORE INTO `settings` (`key`, `value`, `group`, `type`, `label`) VALUES
   ('smtp_from',         '',                            'mail',     'text',     'Absender-E-Mail'),
   ('smtp_from_name',    '',                            'mail',     'text',     'Absendername'),
   ('smtp_encryption',   'tls',                         'mail',     'text',     'Verschlüsselung'),
-  ('legal_disclaimer',  'Diese Unterlagen wurden mit RSA21-Free erstellt. Sie ersetzen keine fachkundige Prüfung. Vor der Einreichung ist eine Überprüfung durch einen qualifizierten Fachmann erforderlich.', 'legal', 'textarea', 'Rechtlicher Hinweis');
+  ('legal_disclaimer',  'Diese Unterlagen wurden mit Sonka Bau & Sonnenimmobilien - Multi Administration erstellt. Sie ersetzen keine fachkundige Prüfung. Vor der Einreichung ist eine Überprüfung durch einen qualifizierten Fachmann erforderlich.', 'legal', 'textarea', 'Rechtlicher Hinweis');
 
 -- ── Customers ────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS `customers` (
@@ -362,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `api_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 SET FOREIGN_KEY_CHECKS = 1;
--- RSA21-Free – Dokumentvorlagen (Default-Templates)
+-- Sonka Bau & Sonnenimmobilien - Multi Administration – Dokumentvorlagen (Default-Templates)
 -- Diese Vorlagen werden bei der Installation eingefügt.
 
 INSERT IGNORE INTO `templates` (`type`, `name`, `description`, `content`, `is_default`) VALUES
@@ -388,7 +388,7 @@ INSERT IGNORE INTO `templates` (`type`, `name`, `description`, `content`, `is_de
     {"name":"road_closure","label":"Sperrungen","type":"textarea","value":""}
   ]},
   {"id":"legal","label":"Erklärung","fields":[
-    {"name":"disclaimer","label":"Rechtlicher Hinweis","type":"static","value":"Die eingereichten Unterlagen wurden mit RSA21-Free erstellt. Sie ersetzen keine fachkundige Prüfung durch einen qualifizierten Fachmann. Alle Angaben sind nach bestem Wissen und Gewissen gemacht. Die Genehmigungsfähigkeit kann durch diese Software nicht zugesichert werden."},
+    {"name":"disclaimer","label":"Rechtlicher Hinweis","type":"static","value":"Die eingereichten Unterlagen wurden mit Sonka Bau & Sonnenimmobilien - Multi Administration erstellt. Sie ersetzen keine fachkundige Prüfung durch einen qualifizierten Fachmann. Alle Angaben sind nach bestem Wissen und Gewissen gemacht. Die Genehmigungsfähigkeit kann durch diese Software nicht zugesichert werden."},
     {"name":"date_place","label":"Ort, Datum","type":"text","value":"{{city}}, {{date}}"},
     {"name":"signature","label":"Unterschrift Antragsteller","type":"signature","value":""}
   ]}
@@ -512,6 +512,6 @@ INSERT IGNORE INTO `templates` (`type`, `name`, `description`, `content`, `is_de
     {"name":"problems","label":"Aufgetretene Probleme / Lösungen","type":"textarea","value":""}
   ]},
   {"id":"disclaimer","label":"Rechtlicher Hinweis","fields":[
-    {"name":"disclaimer","label":"Hinweis","type":"static","value":"Diese Dokumentation wurde mit RSA21-Free erstellt. Die Genehmigungsfähigkeit der erstellten Unterlagen kann durch diese Software nicht zugesichert werden. Alle Planunterlagen und Dokumente sind vor der Einreichung bei der zuständigen Behörde durch einen qualifizierten Fachmann zu prüfen."}
+    {"name":"disclaimer","label":"Hinweis","type":"static","value":"Diese Dokumentation wurde mit Sonka Bau & Sonnenimmobilien - Multi Administration erstellt. Die Genehmigungsfähigkeit der erstellten Unterlagen kann durch diese Software nicht zugesichert werden. Alle Planunterlagen und Dokumente sind vor der Einreichung bei der zuständigen Behörde durch einen qualifizierten Fachmann zu prüfen."}
   ]}
 ]}', 1);

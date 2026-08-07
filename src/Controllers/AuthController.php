@@ -417,7 +417,7 @@ class AuthController extends Controller
         $secret = $this->generateBase32Secret();
         Session::set('pending_2fa_secret', $secret);
 
-        $issuer = rawurlencode(defined('APP_NAME') ? (string) APP_NAME : 'RSA21-Free');
+        $issuer = rawurlencode(defined('APP_NAME') ? (string) APP_NAME : 'Sonka Bau & Sonnenimmobilien - Multi Administration');
         $label = rawurlencode(($user['email'] ?? 'user') . '@' . $issuer);
         $qrUrl = sprintf('otpauth://totp/%s?secret=%s&issuer=%s', $label, $secret, $issuer);
 
