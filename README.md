@@ -151,7 +151,6 @@ RSA-Webversion/
 │   └── symbols.php   # Symbol-API
 ├── includes/         # DB, Auth, CSRF, Helper, Upload
 ├── infos/             # Anwendungsinfos
-├── layout/           # Header/Footer
 ├── pages/            # Seitenmodule
 │   ├── projects/
 │   ├── plans/
