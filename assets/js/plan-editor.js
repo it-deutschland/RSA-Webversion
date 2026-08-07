@@ -312,19 +312,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle export button in export modal (data-editor-action="export")
-    document.querySelectorAll('[data-editor-action="export"]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const format = document.getElementById('exportFormat')?.value || 'svg';
-            if (format === 'png') {
-                exportPng();
-            } else if (format === 'pdf') {
-                exportPdf();
-            } else {
-                exportSvg();
-            }
-        });
-    });
+    // Handle export buttons in export modal
+    document.getElementById('btn-export-svg')?.addEventListener('click', exportSvg);
+    document.getElementById('btn-export-png')?.addEventListener('click', exportPng);
+    document.getElementById('btn-export-pdf')?.addEventListener('click', exportPdf);
 });
 
 // ── Align ─────────────────────────────────────────────────────
@@ -775,10 +766,10 @@ function savePlan() {
     formData.append('_token',      document.querySelector('meta[name="csrf-token"]')?.content || '');
 
     fetch(`/plans/${Editor.planId}/save`, { method: 'POST', body: formData })
-        .then(r => r.json())
-        .then(data => {
+        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(() => {
             Editor.modified = false;
-            if (window.RSA21?.setAutoSaveStatus) window.RSA21.setAutoSaveStatus(data.success ? 'saved' : 'error');
+            if (window.RSA21?.setAutoSaveStatus) window.RSA21.setAutoSaveStatus('saved');
         })
         .catch(() => {
             if (window.RSA21?.setAutoSaveStatus) window.RSA21.setAutoSaveStatus('error');
@@ -811,9 +802,9 @@ function exportSvg() {
 }
 
 function exportPng() {
-    const quality = parseFloat(document.getElementById('export-quality')?.value || '1');
-    const mult    = parseFloat(document.getElementById('exportResolution')?.value / 96 || '2');
-    const dataUrl = Editor.canvas.toDataURL({ format: 'png', quality, multiplier: mult });
+    const dpi    = parseFloat(document.getElementById('exportResolution')?.value || '300');
+    const mult   = dpi / 96;
+    const dataUrl = Editor.canvas.toDataURL({ format: 'png', multiplier: mult });
     const link    = document.createElement('a');
     link.download = 'plan.png';
     link.href     = dataUrl;
