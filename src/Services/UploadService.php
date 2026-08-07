@@ -20,7 +20,7 @@ class UploadService
 
     public function __construct()
     {
-        $this->uploadPath        = defined('UPLOAD_PATH')        ? UPLOAD_PATH        : BASE_PATH . '/uploads';
+        $this->uploadPath        = defined('UPLOAD_PATH')        ? UPLOAD_PATH        : BASE_PATH . '/dateien';
         $this->maxSize           = defined('UPLOAD_MAX_SIZE')    ? UPLOAD_MAX_SIZE    : 52428800;
         $this->allowedExtensions = defined('ALLOWED_EXTENSIONS') ? ALLOWED_EXTENSIONS : ['svg','png','jpg','jpeg','pdf','zip','dxf'];
     }

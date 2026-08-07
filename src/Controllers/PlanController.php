@@ -239,12 +239,12 @@ class PlanController extends Controller
             return '';
         }
 
-        $directory = rtrim((defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/uploads'), '/') . '/plans/thumbnails';
+        $directory = rtrim((defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/dateien'), '/') . '/plans/thumbnails';
         $this->ensureDirectory($directory);
         $fileName = 'plan_' . $planId . '_' . date('YmdHis') . '.' . $extension;
         file_put_contents($directory . '/' . $fileName, $binary);
 
-        return '/uploads/plans/thumbnails/' . $fileName;
+        return '/dateien/plans/thumbnails/' . $fileName;
     }
 
     /**

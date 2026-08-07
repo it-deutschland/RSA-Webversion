@@ -302,6 +302,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const delta = e.deltaY > 0 ? 0.9 : 1.1;
         setZoom(Editor.canvas.getZoom() * delta);
     }, { passive: false });
+
+    // Show note after credits field is filled
+    const creditsInput = document.getElementById('exportCredits');
+    const creditsNote  = document.getElementById('exportCreditsNote');
+    if (creditsInput && creditsNote) {
+        creditsInput.addEventListener('input', function () {
+            creditsNote.classList.toggle('d-none', this.value.trim() === '');
+        });
+    }
+
+    // Handle export button in export modal (data-editor-action="export")
+    document.querySelectorAll('[data-editor-action="export"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const format = document.getElementById('exportFormat')?.value || 'svg';
+            if (format === 'png') {
+                exportPng();
+            } else if (format === 'pdf') {
+                exportPdf();
+            } else {
+                exportSvg();
+            }
+        });
+    });
 });
 
 // ── Align ─────────────────────────────────────────────────────
@@ -634,7 +657,7 @@ async function loadSymbolLibrary() {
             const item = document.createElement('div');
             item.className = 'symbol-item';
             item.dataset.symId  = sym.id;
-            item.dataset.symUrl = sym.file_url || `/uploads/symbols/${sym.file_path}`;
+            item.dataset.symUrl = sym.file_url || `/dateien/symbols/${sym.file_path}`;
             item.dataset.symName = sym.name;
             item.dataset.symW   = sym.width_mm  || 100;
             item.dataset.symH   = sym.height_mm || 100;
@@ -769,15 +792,27 @@ function startAutoSave() {
 }
 
 // ── Export ────────────────────────────────────────────────────
+function getExportCredits() {
+    return (document.getElementById('exportCredits')?.value || '').trim();
+}
+
+function addCreditsToSvg(svg) {
+    const credits = getExportCredits();
+    if (!credits) return svg;
+    const escaped = escHtml(credits);
+    const creditsSvg = `<text x="10" y="100%" dy="-6" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#555" opacity="0.8">${escaped}</text>`;
+    return svg.replace('</svg>', creditsSvg + '</svg>');
+}
+
 function exportSvg() {
-    const svg = Editor.canvas.toSVG();
+    const svg = addCreditsToSvg(Editor.canvas.toSVG());
     const blob = new Blob([svg], { type: 'image/svg+xml' });
     downloadBlob(blob, 'plan.svg');
 }
 
 function exportPng() {
     const quality = parseFloat(document.getElementById('export-quality')?.value || '1');
-    const mult    = parseFloat(document.getElementById('export-scale')?.value   || '2');
+    const mult    = parseFloat(document.getElementById('exportResolution')?.value / 96 || '2');
     const dataUrl = Editor.canvas.toDataURL({ format: 'png', quality, multiplier: mult });
     const link    = document.createElement('a');
     link.download = 'plan.png';
@@ -788,9 +823,10 @@ function exportPng() {
 function exportPdf() {
     // For PDF: send canvas data to server to generate PDF
     const formData = new FormData();
-    formData.append('svg',    Editor.canvas.toSVG());
-    formData.append('format', document.getElementById('export-format')?.value || 'A4');
-    formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.content || '');
+    formData.append('svg',     addCreditsToSvg(Editor.canvas.toSVG()));
+    formData.append('format',  document.getElementById('export-format')?.value || 'A4');
+    formData.append('credits', getExportCredits());
+    formData.append('_token',  document.querySelector('meta[name="csrf-token"]')?.content || '');
 
     fetch(`/plans/${Editor.planId}/export`, { method: 'POST', body: formData })
         .then(r => r.blob())

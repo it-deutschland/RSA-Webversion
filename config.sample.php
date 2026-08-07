@@ -47,7 +47,7 @@ define('REGISTRATION_ENABLED', true);
 
 // ── Uploads ───────────────────────────────────────────────────────────────
 define('UPLOAD_MAX_SIZE',   52428800); // 50 MB in bytes
-define('UPLOAD_PATH',       BASE_PATH . '/uploads');
+define('UPLOAD_PATH',       BASE_PATH . '/dateien');
 define('ALLOWED_EXTENSIONS', ['svg','png','jpg','jpeg','pdf','zip','dxf']);
 
 // ── Logging ───────────────────────────────────────────────────────────────
@@ -55,10 +55,10 @@ define('LOG_LEVEL',    'info');        // debug | info | warning | error
 define('LOG_PATH',     BASE_PATH . '/infos');
 
 // ── Backup ────────────────────────────────────────────────────────────────
-define('BACKUP_PATH',  BASE_PATH . '/backups');
+define('BACKUP_PATH',  BASE_PATH . '/sicherungen');
 
 // ── Storage ───────────────────────────────────────────────────────────────
-define('STORAGE_PATH', BASE_PATH . '/storage');
+define('STORAGE_PATH', BASE_PATH . '/speicher');
 
 // ── PDF ───────────────────────────────────────────────────────────────────
 define('PDF_AUTHOR',   APP_NAME);

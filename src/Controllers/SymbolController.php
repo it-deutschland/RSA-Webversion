@@ -109,7 +109,7 @@ class SymbolController extends Controller
         }
 
         $storedArchive = $this->storeUploadedFile($archive, 'imports', ['zip']);
-        $importRoot = rtrim((defined('STORAGE_PATH') ? (string) STORAGE_PATH : BASE_PATH . '/storage'), '/') . '/symbol-imports/' . bin2hex(random_bytes(6));
+        $importRoot = rtrim((defined('STORAGE_PATH') ? (string) STORAGE_PATH : BASE_PATH . '/speicher'), '/') . '/symbol-imports/' . bin2hex(random_bytes(6));
         $this->ensureDirectory($importRoot);
 
         $zip = new ZipArchive();
@@ -134,7 +134,7 @@ class SymbolController extends Controller
             }
 
             $sourcePath = $fileInfo->getPathname();
-            $destinationDirectory = rtrim((defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/uploads'), '/') . '/symbols/imported';
+            $destinationDirectory = rtrim((defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/dateien'), '/') . '/symbols/imported';
             $this->ensureDirectory($destinationDirectory);
             $storedName = date('YmdHis') . '_' . bin2hex(random_bytes(6)) . '.' . ($extension === 'jpeg' ? 'jpg' : $extension);
             $destinationPath = $destinationDirectory . '/' . $storedName;
@@ -146,7 +146,7 @@ class SymbolController extends Controller
                 'name' => pathinfo($fileInfo->getFilename(), PATHINFO_FILENAME),
                 'sign_number' => null,
                 'description' => null,
-                'file_path' => '/uploads/symbols/imported/' . $storedName,
+                'file_path' => '/dateien/symbols/imported/' . $storedName,
                 'file_type' => $extension === 'jpeg' ? 'jpg' : $extension,
                 'width_mm' => null,
                 'height_mm' => null,

@@ -19,7 +19,7 @@ class Upload extends Model
      */
     public function getUrl(): string
     {
-        return '/uploads/' . ltrim((string) ($this->stored_name ?? ''), '/');
+        return '/dateien/' . ltrim((string) ($this->stored_name ?? ''), '/');
     }
 
     /**

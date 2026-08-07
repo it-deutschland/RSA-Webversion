@@ -51,7 +51,7 @@ class UploadController extends Controller
             $this->json([
                 'message' => 'Upload successful.',
                 'id' => $uploadId,
-                'url' => '/uploads/' . $uploadId,
+                'url' => '/dateien/' . $uploadId,
             ]);
         } catch (\Throwable $throwable) {
             $this->json(['message' => $throwable->getMessage()], 422);

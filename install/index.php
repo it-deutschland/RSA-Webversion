@@ -193,13 +193,13 @@ define('TWO_FACTOR_ENABLED',  false);
 define('REGISTRATION_ENABLED', true);
 
 define('UPLOAD_MAX_SIZE',    52428800);
-define('UPLOAD_PATH',        BASE_PATH . '/uploads');
+define('UPLOAD_PATH',        BASE_PATH . '/dateien');
 define('ALLOWED_EXTENSIONS', ['svg','png','jpg','jpeg','pdf','zip','dxf']);
 
 define('LOG_LEVEL',    'info');
 define('LOG_PATH',     BASE_PATH . '/infos');
-define('BACKUP_PATH',  BASE_PATH . '/backups');
-define('STORAGE_PATH', BASE_PATH . '/storage');
+define('BACKUP_PATH',  BASE_PATH . '/sicherungen');
+define('STORAGE_PATH', BASE_PATH . '/speicher');
 
 define('PDF_AUTHOR',   APP_NAME);
 define('PDF_CREATOR',  APP_NAME . ' v' . APP_VERSION);
@@ -233,10 +233,10 @@ function checkPHP(): array
 function checkDirs(): array
 {
     $paths = [
-        'uploads/'    => BASE_PATH . '/uploads',
+        'dateien/'    => BASE_PATH . '/dateien',
         'infos/'      => BASE_PATH . '/infos',
-        'backups/'    => BASE_PATH . '/backups',
-        'storage/'    => BASE_PATH . '/storage',
+        'sicherungen/'    => BASE_PATH . '/sicherungen',
+        'speicher/'    => BASE_PATH . '/speicher',
         './ (config)' => BASE_PATH,
     ];
 
