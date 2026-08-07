@@ -28,7 +28,7 @@ foreach ($flashTypes as $key => $class) {
     </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="/assets/css/app.php" rel="stylesheet">
+    <link href="/assets/css/app.css" rel="stylesheet">
 </head>
 <body class="auth-gradient min-vh-100 d-flex flex-column">
 <nav class="navbar bg-transparent py-3">

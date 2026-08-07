@@ -20,7 +20,7 @@ if (!is_string($canvasData) || trim($canvasData) === '') {
     <title><?= View::e((string) rsa21_data_get($plan, 'title', 'Plan-Editor')) ?> · RSA21-Free</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="/assets/css/app.php" rel="stylesheet">
+    <link href="/assets/css/app.css" rel="stylesheet">
     <style>
         html, body { height: 100%; }
         body { margin: 0; overflow: hidden; }
