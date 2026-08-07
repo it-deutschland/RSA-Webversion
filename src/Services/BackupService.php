@@ -20,8 +20,8 @@ class BackupService
 
     public function __construct()
     {
-        $this->backupPath = defined('BACKUP_PATH') ? BACKUP_PATH : BASE_PATH . '/backups';
-        $this->uploadPath = defined('UPLOAD_PATH')  ? UPLOAD_PATH  : BASE_PATH . '/uploads';
+        $this->backupPath = defined('BACKUP_PATH') ? BACKUP_PATH : BASE_PATH . '/sicherungen';
+        $this->uploadPath = defined('UPLOAD_PATH')  ? UPLOAD_PATH  : BASE_PATH . '/dateien';
     }
 
     // ── Create ───────────────────────────────────────────────

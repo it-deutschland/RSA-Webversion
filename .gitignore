@@ -4,22 +4,22 @@
 /config.php
 
 # Uploads and storage (keep dirs via .gitkeep)
-/uploads/*
-!/uploads/.gitkeep
-!/uploads/.tmp/
+/dateien/*
+!/dateien/.gitkeep
+!/dateien/.tmp/
 
 # Backups
-/backups/*
-!/backups/.gitkeep
+/sicherungen/*
+!/sicherungen/.gitkeep
 
 # Logs
 /infos/*
 !/infos/.gitkeep
 
 # Storage
-/storage/**/*
-!/storage/symbols/.gitkeep
-!/storage/templates/.gitkeep
+/speicher/**/*
+!/speicher/symbols/.gitkeep
+!/speicher/templates/.gitkeep
 
 # OS files
 .DS_Store

@@ -23,7 +23,7 @@ function upload_store(array $file, string $subDir = '', ?array $allowedExtension
         return ['ok' => false, 'message' => 'Dateigröße ungültig oder zu groß.'];
     }
 
-    $baseUploadPath = defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : (BASE_PATH . '/uploads');
+    $baseUploadPath = defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : (BASE_PATH . '/dateien');
     $relativeDir = trim($subDir, '/');
     $targetDir = $relativeDir === '' ? $baseUploadPath : $baseUploadPath . '/' . $relativeDir;
 
@@ -39,7 +39,7 @@ function upload_store(array $file, string $subDir = '', ?array $allowedExtension
         return ['ok' => false, 'message' => 'Datei konnte nicht gespeichert werden.'];
     }
 
-    $relativePath = 'uploads/' . ($relativeDir === '' ? '' : $relativeDir . '/') . $safeName;
+    $relativePath = 'dateien/' . ($relativeDir === '' ? '' : $relativeDir . '/') . $safeName;
 
     return [
         'ok' => true,

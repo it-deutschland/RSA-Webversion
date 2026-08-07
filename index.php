@@ -109,6 +109,7 @@ $routes = [
 
     ['POST', '/upload', ['controller' => \App\Controllers\UploadController::class, 'action' => 'store']],
     ['POST', '/upload/{id}/delete', ['controller' => \App\Controllers\UploadController::class, 'action' => 'destroy']],
+    ['GET', '/dateien/{id}', ['controller' => \App\Controllers\UploadController::class, 'action' => 'serve']],
     ['GET', '/uploads/{id}', ['controller' => \App\Controllers\UploadController::class, 'action' => 'serve']],
 
     ['GET', '/api/plans.php', ['file' => '/api/plans.php']],

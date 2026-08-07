@@ -657,7 +657,7 @@ async function loadSymbolLibrary() {
             const item = document.createElement('div');
             item.className = 'symbol-item';
             item.dataset.symId  = sym.id;
-            item.dataset.symUrl = sym.file_url || `/uploads/symbols/${sym.file_path}`;
+            item.dataset.symUrl = sym.file_url || `/dateien/symbols/${sym.file_path}`;
             item.dataset.symName = sym.name;
             item.dataset.symW   = sym.width_mm  || 100;
             item.dataset.symH   = sym.height_mm || 100;

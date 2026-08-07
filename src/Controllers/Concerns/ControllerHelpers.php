@@ -142,7 +142,7 @@ trait ControllerHelpers
             throw new \RuntimeException('The uploaded file is too large.');
         }
 
-        $uploadRoot = defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/uploads';
+        $uploadRoot = defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/dateien';
         $subDirectory = trim($directory, '/');
         $targetDirectory = rtrim($uploadRoot, '/');
         if ($subDirectory !== '') {
@@ -163,7 +163,7 @@ trait ControllerHelpers
         }
 
         $mimeType = (string) ($file['type'] ?? (function_exists('mime_content_type') ? mime_content_type($targetPath) : 'application/octet-stream'));
-        $relativePath = '/uploads' . ($subDirectory !== '' ? '/' . $subDirectory : '') . '/' . $storedName;
+        $relativePath = '/dateien' . ($subDirectory !== '' ? '/' . $subDirectory : '') . '/' . $storedName;
 
         return [
             'original_name' => $originalName,
@@ -179,17 +179,19 @@ trait ControllerHelpers
     protected function resolveStoragePath(string $filePath): string
     {
         $clean = ltrim(str_replace(['..', '\\'], ['', '/'], $filePath), '/');
-        if (str_starts_with($clean, 'uploads/')) {
+        $uploadBase = rtrim((defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/dateien'), '/');
+        if (str_starts_with($clean, 'dateien/')) {
             $resolved = BASE_PATH . '/' . $clean;
+        } elseif (str_starts_with($clean, 'uploads/')) {
+            $resolved = $uploadBase . '/' . ltrim(substr($clean, strlen('uploads/')), '/');
         } else {
-            $uploadBase = rtrim((defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/uploads'), '/');
             $resolved = $uploadBase . '/' . $clean;
         }
 
         // Verify the resolved path stays within allowed base directories
         $real = realpath($resolved);
-        $allowedBase = realpath(defined('UPLOAD_PATH') ? UPLOAD_PATH : BASE_PATH . '/uploads');
-        $storageBase = realpath(defined('STORAGE_PATH') ? STORAGE_PATH : BASE_PATH . '/storage');
+        $allowedBase = realpath(defined('UPLOAD_PATH') ? UPLOAD_PATH : BASE_PATH . '/dateien');
+        $storageBase = realpath(defined('STORAGE_PATH') ? STORAGE_PATH : BASE_PATH . '/speicher');
 
         if ($real === false) {
             return $resolved; // file doesn't exist yet (new upload)

@@ -88,9 +88,9 @@ class Symbol extends Model
     public function getFileUrl(): string
     {
         $path = ltrim((string) ($this->file_path ?? ''), '/');
-        $path = preg_replace('#^uploads/symbols/#', '', $path) ?? $path;
+        $path = preg_replace('#^(dateien|uploads)/symbols/#', '', $path) ?? $path;
 
-        return '/uploads/symbols/' . $path;
+        return '/dateien/symbols/' . $path;
     }
 
     /**

@@ -26,7 +26,7 @@ class BackupController extends Controller
         $this->requireAuth();
         $this->enforceRole('admin');
 
-        $backupPath = defined('BACKUP_PATH') ? (string) BACKUP_PATH : BASE_PATH . '/backups';
+        $backupPath = defined('BACKUP_PATH') ? (string) BACKUP_PATH : BASE_PATH . '/sicherungen';
         $this->ensureDirectory($backupPath);
         $files = [];
         foreach (scandir($backupPath) ?: [] as $file) {
@@ -44,7 +44,7 @@ class BackupController extends Controller
         }
         usort($files, static fn (array $left, array $right): int => strcmp((string) $right['modified_at'], (string) $left['modified_at']));
 
-        $this->render('backups/index', ['files' => $files]);
+        $this->render('backup/index', ['files' => $files]);
     }
 
     public function create(): void
@@ -62,7 +62,7 @@ class BackupController extends Controller
             }
         }
 
-        $backupPath = defined('BACKUP_PATH') ? (string) BACKUP_PATH : BASE_PATH . '/backups';
+        $backupPath = defined('BACKUP_PATH') ? (string) BACKUP_PATH : BASE_PATH . '/sicherungen';
         $this->ensureDirectory($backupPath);
         $baseName = 'backup-' . date('Ymd-His');
         $sqlFile = $backupPath . '/' . $baseName . '.sql';
@@ -82,7 +82,7 @@ class BackupController extends Controller
         $this->enforceRole('admin');
 
         $fileName = $this->sanitizeBackupName($f);
-        $fullPath = (defined('BACKUP_PATH') ? (string) BACKUP_PATH : BASE_PATH . '/backups') . '/' . $fileName;
+        $fullPath = (defined('BACKUP_PATH') ? (string) BACKUP_PATH : BASE_PATH . '/sicherungen') . '/' . $fileName;
         if (!is_file($fullPath)) {
             Response::notFound();
         }
@@ -106,7 +106,7 @@ class BackupController extends Controller
             $this->back();
         }
 
-        $stored = $this->storeUploadedFile($file, 'backups/imports', ['sql']);
+        $stored = $this->storeUploadedFile($file, 'sicherungen/imports', ['sql']);
         $sql = file_get_contents((string) $stored['absolute_path']);
         if (!is_string($sql) || trim($sql) === '') {
             Session::flash('error', 'The selected backup file is empty.');
@@ -141,7 +141,7 @@ class BackupController extends Controller
         $this->ensureCsrf();
 
         $fileName = $this->sanitizeBackupName($f);
-        $fullPath = (defined('BACKUP_PATH') ? (string) BACKUP_PATH : BASE_PATH . '/backups') . '/' . $fileName;
+        $fullPath = (defined('BACKUP_PATH') ? (string) BACKUP_PATH : BASE_PATH . '/sicherungen') . '/' . $fileName;
         if (!is_file($fullPath)) {
             Response::notFound();
         }
@@ -182,7 +182,7 @@ class BackupController extends Controller
     {
         $zip = new ZipArchive();
         $zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-        $uploadPath = defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/uploads';
+        $uploadPath = defined('UPLOAD_PATH') ? (string) UPLOAD_PATH : BASE_PATH . '/dateien';
         if (is_dir($uploadPath)) {
             $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($uploadPath, RecursiveDirectoryIterator::SKIP_DOTS));
             foreach ($iterator as $item) {

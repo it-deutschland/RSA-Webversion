@@ -74,7 +74,7 @@ RSA21-Free ist eine vollständig browserbasierte Anwendung für die Erstellung u
 - **Datenbank:** MySQL 5.7+ / MariaDB 10.3+
 - **Webserver:** Apache mit `mod_rewrite` (oder nginx mit entsprechender Konfiguration)
 - **PHP-Erweiterungen:** `pdo`, `pdo_mysql`, `json`, `mbstring`, `openssl`, `gd`, `zip`, `fileinfo`
-- **Schreibrechte:** `uploads/`, `infos/`, `backups/`, `storage/`, und das Stammverzeichnis (für `config.php`)
+- **Schreibrechte:** `dateien/`, `infos/`, `sicherungen/`, `speicher/`, und das Stammverzeichnis (für `config.php`)
 
 ---
 
@@ -110,7 +110,7 @@ Im Stammverzeichnis muss eine Datei `config.php` vorhanden sein. Erstellen Sie s
 Stellen Sie sicher, dass `database.sql` importiert wurde und die Zugangsdaten in `config.php` korrekt sind.
 
 **3. Schreibrechte prüfen**  
-Das Stammverzeichnis sowie `uploads/`, `infos/`, `backups/`, `storage/` müssen für den Webserver beschreibbar sein (Rechte 755 oder 775).
+Das Stammverzeichnis sowie `dateien/`, `infos/`, `sicherungen/`, `speicher/` müssen für den Webserver beschreibbar sein (Rechte 755 oder 775).
 
 **4. Browser-Cookies löschen**  
 Löschen Sie die Cookies für Ihre Domain und testen Sie im Inkognito-Fenster erneut.
@@ -145,7 +145,7 @@ php -S localhost:8080
 ```
 RSA-Webversion/
 ├── assets/           # CSS, JS, Bilder
-├── backups/          # Backup-Dateien
+├── sicherungen/          # Backup-Dateien
 ├── api/
 │   ├── plans.php     # Plan-API (Save/Export)
 │   └── symbols.php   # Symbol-API
@@ -166,8 +166,8 @@ RSA-Webversion/
 │   ├── Models/       # Datenbankmodelle
 │   ├── Services/     # Dienste (PDF, Backup, Upload)
 │   └── Views/        # PHP-Templates
-├── storage/          # Symbole, Vorlagen
-├── uploads/          # Datei-Uploads
+├── speicher/          # Symbole, Vorlagen
+├── dateien/          # Datei-Uploads
 ├── .htaccess
 ├── config.php
 ├── database.sql
